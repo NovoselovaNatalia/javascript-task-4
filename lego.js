@@ -79,12 +79,11 @@ exports.sortBy = function (property, order) {
         var newCollection = copyCollection(collection);
 
         return newCollection.sort(function (first, second) {
-            if (first[property] === second[property]) {
-                return 0;
+            if (order === 'asc') {
+                return first[property] > second[property];
             }
-            if (first[property] > second[property]) {
-                return order === 'asc' ? 1 : -1;
-            }
+
+            return first[property] < second[property];
         });
     };
 };
