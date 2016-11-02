@@ -25,10 +25,10 @@ exports.query = function (collection) {
     var func = [].slice.call(arguments, 1);
     func.sort(function (a, b) {
         return PRIORITET.indexOf(a.name) - PRIORITET.indexOf(b.name);
+    })
+    .forEach (function (query) {
+        copy = query(copy);
     });
-    for (var i = 1; i < func.length; i++) {
-        copy = func[i](copy);
-    }
 
     return copy;
 };
