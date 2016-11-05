@@ -6,10 +6,10 @@
  */
 exports.isStar = false;
 
-var PRIORITET = ['filterIn', 'sortBy', 'select', 'limit', 'format'];
+var priorityFunctions = ['filterIn', 'sortBy', 'select', 'limit', 'format'];
 
-function copyCollection(array) {
-    return array.map(function (element) {
+function getCopyCollection(collection) {
+    return collection.map(function (element) {
         return Object.assign({}, element);
     });
 }
@@ -21,16 +21,16 @@ function copyCollection(array) {
  * @returns {Array}
  */
 exports.query = function (collection) {
-    var copy = copyCollection(collection);
-    var func = [].slice.call(arguments, 1);
-    func.sort(function (a, b) {
-        return PRIORITET.indexOf(a.name) - PRIORITET.indexOf(b.name);
+    var copyCollection = getCopyCollection(collection);
+    var functions = [].slice.call(arguments, 1);
+    functions.sort(function (a, b) {
+        return priorityFunctions.indexOf(a.name) - priorityFunctions.indexOf(b.name);
     })
     .forEach (function (query) {
-        copy = query(copy);
+        copyCollection = query(copyCollection);
     });
 
-    return copy;
+    return copyCollection;
 };
 
 /**
@@ -38,6 +38,7 @@ exports.query = function (collection) {
  * @params {...String}
  * @returns {Function}
  */
+
 exports.select = function () {
     var fieldsCollection = [].slice.call(arguments);
 
@@ -76,9 +77,9 @@ exports.filterIn = function (property, values) {
  */
 exports.sortBy = function (property, order) {
     return function sortBy(collection) {
-        var newCollection = copyCollection(collection);
+        var copyCollection = getCopyCollection(collection);
 
-        return newCollection.sort(function (first, second) {
+        return copyCollection.sort(function (first, second) {
             if (order === 'asc') {
                 return first[property] > second[property];
             }
@@ -97,12 +98,12 @@ exports.sortBy = function (property, order) {
 exports.format = function (property, formatter) {
     return function format(collection) {
         return collection.map(function (element) {
-            var copy = Object.assign({}, element);
+            var copyCollection = Object.assign({}, element);
             if (property in element) {
-                copy[property] = formatter(copy[property]);
+                copyCollection[property] = formatter(copyCollection[property]);
             }
 
-            return copy;
+            return copyCollection;
         });
     };
 };
