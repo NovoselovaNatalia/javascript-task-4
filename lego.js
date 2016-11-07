@@ -96,12 +96,11 @@ exports.sortBy = function (property, order) {
 exports.format = function (property, formatter) {
     return function format(collection) {
         return collection.map(function (element) {
-            var copyCollection = element.slice();
-            if (property in element) {
-                copyCollection[property] = formatter(copyCollection[property]);
+            if (element.hasOwnProperty(property)) {
+                element[property] = formatter(element[property]);
             }
 
-            return copyCollection;
+            return element;
         });
     };
 };
