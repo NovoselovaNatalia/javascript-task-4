@@ -9,8 +9,7 @@ exports.isStar = false;
 var priorityFunctions = ['filterIn', 'sortBy', 'select', 'limit', 'format'];
 
 function getCopyCollection(collection) {
-    return collection.map(function (element) {
-        return Object.assign({}, element);
+    return collection.slice();
     });
 }
 
@@ -80,11 +79,8 @@ exports.sortBy = function (property, order) {
         var copyCollection = getCopyCollection(collection);
 
         return copyCollection.sort(function (first, second) {
-            if (order === 'asc') {
-                return first[property] > second[property];
-            }
-
-            return first[property] < second[property];
+            var result = first[property] > second[property] ? 1: -1;
+            return order === 'asc'? result : -result;
         });
     };
 };
@@ -98,7 +94,7 @@ exports.sortBy = function (property, order) {
 exports.format = function (property, formatter) {
     return function format(collection) {
         return collection.map(function (element) {
-            var copyCollection = Object.assign({}, element);
+            var copyCollection = element.slice();
             if (property in element) {
                 copyCollection[property] = formatter(copyCollection[property]);
             }
