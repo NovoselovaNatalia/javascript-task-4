@@ -10,7 +10,6 @@ var priorityFunctions = ['filterIn', 'sortBy', 'select', 'limit', 'format'];
 
 function getCopyCollection(collection) {
     return collection.slice();
-    });
 }
 
 /**
