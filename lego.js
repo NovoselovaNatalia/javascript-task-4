@@ -81,7 +81,7 @@ exports.sortBy = function (property, order) {
             var oneProperty = first[property];
             var twoProperty = second[property];
             var result = oneProperty > twoProperty ? 1 : -1;
-            
+
             return order === 'asc' ? result : -result;
         });
     };
