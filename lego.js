@@ -95,10 +95,8 @@ exports.sortBy = function (property, order) {
  */
 exports.format = function (property, formatter) {
     return function format(collection) {
-        return collection.map(function (element) {
-            if (element.hasOwnProperty(property)) {
-                element[property] = formatter(element[property]);
-            }
+        return collection.slice().map(function (element) {
+            element[property] = formatter(element[property]);
 
             return element;
         });
