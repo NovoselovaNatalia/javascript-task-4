@@ -78,7 +78,9 @@ exports.sortBy = function (property, order) {
         var copyCollection = getCopyCollection(collection);
 
         return copyCollection.sort(function (first, second) {
-            var result = first[property] > second[property] ? 1 : -1;
+            var oneProperty = first[property];
+            var twoProperty = second[property];
+            var result = oneProperty > twoProperty ? 1 : -1;
             
             return order === 'asc' ? result : -result;
         });
